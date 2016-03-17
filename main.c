@@ -207,9 +207,9 @@ int main(int argc, char **argv)
     } else {
 	srcfile = stdin;
 #ifdef GC_BDW
-	printf("JOY  -  compiled at %s on %s (BDW)\n",__TIME__,__DATE__);
+	printf("STASH/JOY  -  compiled at %s on %s (BDW)\n",__TIME__,__DATE__);
 #else
-	printf("JOY  -  compiled at %s on %s (NOBDW)\n",__TIME__,__DATE__);
+	printf("STASH/JOY  -  compiled at %s on %s (NOBDW)\n",__TIME__,__DATE__);
 #endif
 	printf("Copyright 2001 by Manfred von Thun\n"); 
     }
