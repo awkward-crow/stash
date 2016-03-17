@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+
+#include <unistd.h>
+
 #include "globals.h"
 # ifdef GC_BDW
 #    include "gc/gc.h"
@@ -207,6 +210,8 @@ PUSH(undeferror_,INTEGER_NEWNODE,(long)undeferror)
 PUSH(clock_,INTEGER_NEWNODE,(long)(clock() - startclock))
 PUSH(time_,INTEGER_NEWNODE,(long)time(NULL))
 PUSH(argc_,INTEGER_NEWNODE,(long)g_argc)
+
+PUSH(fork_,INTEGER_NEWNODE,(long)fork())
 
 PUBLIC void stack_(void)
 { NULLARY(LIST_NEWNODE, stk); }
@@ -1387,6 +1392,32 @@ USETOP( settracegc_,"settracegc",NUMERICTYPE, tracegc = stk->u.num )
 USETOP( srand_,"srand",INTEGER, srand((unsigned int) stk->u.num) )
 USETOP( include_,"include",STRING, doinclude(stk->u.str) )
 USETOP( system_,"system",STRING, system(stk->u.str) )
+
+PRIVATE void execv_()
+{
+    ONEPARAM("execv");
+    ONEQUOTE("execv");
+    Node *a = stk->u.lis;
+    int n = 0;
+    while (a != NULL && a->op == STRING_) {
+        a = a->next;
+        n += 1;
+    }
+    if (a != NULL) {
+        execerror("list of strings", "execv");
+    }
+    char **args = (char **) malloc(n * sizeof(char **));
+    a = stk->u.lis;
+    n = 0;
+    while (a != NULL) {
+        args[n] = a->u.str;
+        a = a->next;
+        n += 1;
+    }
+    args[n] = (char *)0;
+    execv(args[0], args);
+    _exit(1);
+}
 
 PRIVATE void undefs_(void)
 {
@@ -2982,6 +3013,12 @@ static struct {char *name; void (*proc) (); char *messg1, *messg2 ; }
 
 {"gc",			gc_,	"->",
 "Initiates garbage collection."},
+
+{"fork",    fork_,  "->", 
+""}, // XXX find suitable description
+
+{"execv",   execv_, "quotation ->", 
+""}, // XXX find suitable description
 
 {"system",		system_,	"\"command\"  ->",
 "Escapes to shell, executes string \"command\".\nThe string may cause execution of another program.\nWhen that has finished, the process returns to Joy."},
