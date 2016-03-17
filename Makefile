@@ -5,10 +5,10 @@ SRCS  =  interp.c  scan.c  utils.c  main.c
 OBJS  =  interp.o  scan.o  utils.o  main.o
 CFLAGS =  -DGC_BDW
 
-joy:		$(OBJS) 
-		$(CC)  $(OBJS) -lgc  -lm  -o joy
+stash:		$(OBJS) 
+		$(CC)  $(OBJS) -lgc  -lm  -o stash
 
 $(OBJS):	$(HDRS)
 
 clean:
-		rm *.o joy
+		rm *.o stash
