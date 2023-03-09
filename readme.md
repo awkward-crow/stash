@@ -2,7 +2,7 @@
 
 ## latest
 
-build in 2023??
+build in 2023 - yes!
 
 ## fork
 
@@ -33,6 +33,9 @@ Try
     -rw-r--r-- 1 sunspot sunspot   8964 Mar 14 15:54 utils.c
     -rw-r--r-- 1 sunspot sunspot  10872 Mar 17 16:23 utils.o
 
+## added recently ...
+
+the above i.e. `["/bin/ls" "-l"] execv.` causes the program to exit, you end up back at the prompt in the shell?!
 
 
 ### end
